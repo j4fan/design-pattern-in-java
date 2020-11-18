@@ -7,6 +7,7 @@ import org.junit.runners.JUnit4;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +87,7 @@ public class TestReflect {
     }
 
     @Test
-    public void testMethod() throws ClassNotFoundException {
+    public void testField() throws ClassNotFoundException {
         Class<?> animalClass = Class.forName("com.example.demo.reflect.Animal");
         Field[] fields = animalClass.getDeclaredFields();
 
@@ -96,4 +97,14 @@ public class TestReflect {
         assertTrue(actualFields.containsAll(Arrays.asList("name", "CATEGORY")));
     }
 
+    @Test
+    public void testMethod() throws ClassNotFoundException {
+        Class<?> animalClass = Class.forName("com.example.demo.reflect.Animal");
+        Method[] methods = animalClass.getDeclaredMethods();
+        List<String> actualMethods = Arrays.asList(methods).stream().map(Method::getName).collect(Collectors.toList());
+
+        assertEquals(5, actualMethods.size());
+        assertTrue(actualMethods.containsAll(Arrays.asList("getName",
+                "setName", "getSound")));
+    }
 }
