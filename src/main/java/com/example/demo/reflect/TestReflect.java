@@ -5,10 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -107,4 +104,26 @@ public class TestReflect {
         assertTrue(actualMethods.containsAll(Arrays.asList("getName",
                 "setName", "getSound")));
     }
+
+    @Test
+    public void testConstructor() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<?> birdClass = Class.forName("com.example.demo.reflect.Bird");
+        Constructor<?> cons1 = birdClass.getConstructor();
+        Constructor<?> cons2 = birdClass.getConstructor(String.class);
+        Constructor<?> cons3 = birdClass.getConstructor(String.class,
+                boolean.class);
+
+        Bird bird1 = (Bird) cons1.newInstance();
+        Bird bird2 = (Bird) cons2.newInstance("Weaver bird");
+        Bird bird3 = (Bird) cons3.newInstance("dove", true);
+
+        assertEquals("bird", bird1.getName());
+        assertEquals("Weaver bird", bird2.getName());
+        assertEquals("dove", bird3.getName());
+
+        Assert.assertFalse(bird1.walks());
+        Assert.assertTrue(bird3.walks());
+    }
+
+
 }
