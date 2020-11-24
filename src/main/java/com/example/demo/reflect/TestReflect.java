@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
 public class TestReflect {
@@ -121,8 +120,42 @@ public class TestReflect {
         assertEquals("Weaver bird", bird2.getName());
         assertEquals("dove", bird3.getName());
 
-        Assert.assertFalse(bird1.walks());
+        assertFalse(bird1.walks());
         Assert.assertTrue(bird3.walks());
+    }
+
+    @Test
+    public void testFieldUse() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
+        Class<?> birdClass = Class.forName("com.example.demo.reflect.Bird");
+        Bird bird = (Bird) birdClass.getConstructor().newInstance();
+        Field field = birdClass.getDeclaredField("walks");
+        field.setAccessible(true);
+
+        assertFalse(field.getBoolean(bird));
+        assertFalse(bird.walks());
+
+        field.set(bird, true);
+
+        assertTrue(field.getBoolean(bird));
+        assertTrue(bird.walks());
+    }
+
+    @Test
+    public void testModifyMethod() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<?> birdClass = Class.forName("com.example.demo.reflect.Bird");
+        Bird bird = (Bird) birdClass.getConstructor().newInstance();
+        Method setWalksMethod = birdClass.getDeclaredMethod("setWalks", boolean.class);
+        Method walksMethod = birdClass.getDeclaredMethod("walks");
+        boolean walks = (boolean) walksMethod.invoke(bird);
+
+        assertFalse(walks);
+        assertFalse(bird.walks());
+
+        setWalksMethod.invoke(bird, true);
+
+        boolean walks2 = (boolean) walksMethod.invoke(bird);
+        assertTrue(walks2);
+        assertTrue(bird.walks());
     }
 
 

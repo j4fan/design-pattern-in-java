@@ -12,6 +12,10 @@ public class Bird extends Animal {
         return walks;
     }
 
+    public void setWalks(boolean walks){
+        this.walks = walks;
+    }
+
     public Bird(String name,boolean walks){
         super(name);
         this.walks = walks;
