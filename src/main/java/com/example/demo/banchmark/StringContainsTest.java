@@ -31,8 +31,8 @@ public class StringContainsTest {
     public void init() {
         n = 10000;
         testString = new ArrayList<>();
-        testString.add("ABCAABAABCDABCABABCAABAABCDABCABABCAABAABCDABCABABCAABAABCDABCABABCAABAABCDABCABABCDEABABABEAB");
-        keyword = "ABCDEABABABEAB";
+        testString.add("ABCDAB0ABCDABCABABCAABAABCDABCABABCAABAABCDABCABABCAABAABCDABCABABCAABAABCDABCABABCDEABABABEAB");
+        keyword =      "ABCDABD";
         next = MyKmp.getNext(keyword);
     }
 
