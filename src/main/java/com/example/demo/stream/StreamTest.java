@@ -10,10 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -114,11 +111,10 @@ public class StreamTest {
         BigDecimal amount1 = BigDecimal.valueOf(1.00);
         BigDecimal amount2 = BigDecimal.valueOf(2.00);
         BigDecimal amount3 = BigDecimal.valueOf(3.00);
-        List<BigDecimal> list = Lists.newArrayList(amount1,amount2,amount3);
-        BigDecimal sum = list.stream().reduce(BigDecimal.ZERO,BigDecimal::add);
+        List<BigDecimal> list = Lists.newArrayList(amount1, amount2, amount3);
+        BigDecimal sum = list.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("gg");
     }
-
 
 
     @Data
@@ -128,4 +124,34 @@ public class StreamTest {
         private String name;
         private Integer age;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class Term {
+        private Integer param1;
+        private Integer param2;
+        private Integer param3;
+    }
+
+    @Test
+    public void testCompare() {
+        Term term1 = new Term(10, 5, 1);
+        Term term2 = new Term(10, 5, 2);
+        Term term3 = new Term(9, 2, 3);
+        Term term4 = new Term(10, 4, 4);
+        Term term5 = new Term(11, 2, 5);
+        List<Term> terms = Lists.newArrayList(term1, term2, term3, term4, term5);
+
+        terms.sort(Comparator.comparing(Term::getParam1).
+                thenComparing(Term::getParam2).thenComparing(Term::getParam3));
+
+        System.out.println("gg");
+
+        List<Term> result = terms.stream().sorted(Comparator.comparing(Term::getParam1).
+                thenComparing(Term::getParam2).thenComparing(Term::getParam3)).collect(Collectors.toList());
+        System.out.println(result.get(0));
+        System.out.println("gg");
+    }
+
 }
